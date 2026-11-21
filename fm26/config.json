@@ -1,0 +1,55 @@
+{
+  "fm_launch": "steam://rungameid/3551340",
+  "fm_exe":"d:\\program files (x86)\\steam\\steamapps\\common\\football manager 26\\fm.exe",
+  "fmrte_exe": "d:\\gry\\fmrte 26\\current\\fmrte.exe",
+  "tesseract_cmd": "C:\\Program Files\\Tesseract-OCR\\tesseract.exe",
+
+  "match_threshold": 0.85,
+  "max_retries_on_loss": 10,
+  "heal_before_match": true,
+
+  "timeouts": {
+    "click": 30,
+    "holiday": 400,
+    "save": 120,
+    "simulate": 120,
+    "load_game": 180,
+    "fmrte_reload": 40,
+    "fm_start": 300,
+    "fmrte_start": 90
+  },
+
+  "delays": {
+    "after_click": 2.0,
+    "after_focus": 3.0,
+    "after_save_key": 5.0
+  },
+
+  "offsets": {
+    "_comment": "Pixel offsets in native screen pixels, relative to the centre of the named template. Calibrate with the 'Test templates' button (it saves debug crops into debug/).",
+    "return_date_dropdown_from_label": [240, 0],
+    "most_recent_click_from_title": [0, 60],
+    "save_focus_point_from_window_topleft": [500, 560],
+    "card_region_from_bn_header": [-50, 60, 800, 330],
+    "score_search_halfwidth": 180,
+    "message_list_from_unread_filter": [-110, 30, 330, 680],
+    "message_list_scroll_point_from_unread_filter": [40, 400]
+  },
+
+  "triage": {
+    "important": [
+      "contract", "renewal", "offer", "bid", "transfer request",
+      "loan", "release clause", "signing", "free agent", "retire",
+      "wants to leave", "board takeover", "step aside", "takeover"
+    ],
+    "important_exceptions": [
+      "transfer window roundup", "transfer deadline", "targets and promises",
+      "leaves club", "bonus", "has received", "loaned out"
+    ]
+  },
+
+  "result_loss_words": [
+    "suffer", "disappointment", "knocked out", "crash out", "exit",
+    "beaten", "defeat", "lose ", "loses", "unlucky"
+  ]
+}

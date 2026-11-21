@@ -1,0 +1,81 @@
+{
+  "$note": "EXAMPLE ONLY - not loaded. Once the template PNGs exist, copy this into resource/pipeline/ and adjust. Coordinates are for 720x1280 portrait.",
+  "StageLoop": {
+    "next": [
+      "ClosePopup",
+      "TapStart",
+      "InBattle",
+      "CollectRewards",
+      "TapRetry"
+    ],
+    "timeout": 60000
+  },
+  "ClosePopup": {
+    "recognition": "TemplateMatch",
+    "template": [
+      "common/close.png",
+      "common/ok.png"
+    ],
+    "action": "Click",
+    "next": [
+      "StageLoop"
+    ]
+  },
+  "TapStart": {
+    "recognition": "TemplateMatch",
+    "template": "stage/start.png",
+    "action": "Click",
+    "next": [
+      "InBattle",
+      "ClosePopup"
+    ]
+  },
+  "InBattle": {
+    "recognition": "TemplateMatch",
+    "template": "battle/hud_marker.png",
+    "action": "Custom",
+    "custom_action": "ChainDrag",
+    "custom_action_param": {
+      "points": [
+        [
+          200,
+          900
+        ],
+        [
+          300,
+          950
+        ],
+        [
+          400,
+          900
+        ]
+      ],
+      "step_ms": 60
+    },
+    "next": [
+      "InBattle",
+      "CollectRewards",
+      "ClosePopup"
+    ]
+  },
+  "CollectRewards": {
+    "recognition": "TemplateMatch",
+    "template": "rewards/next.png",
+    "action": "Click",
+    "next": [
+      "CollectRewards",
+      "TapRetry",
+      "StageLoop"
+    ]
+  },
+  "TapRetry": {
+    "recognition": "TemplateMatch",
+    "template": "rewards/retry.png",
+    "action": "Click",
+    "next": [
+      "TapStart",
+      "ClosePopup",
+      "StageLoop"
+    ]
+  }
+}

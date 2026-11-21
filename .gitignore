@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Runtime output (debug screenshots, logs)
+debug/
+screenshots/
+*.log
+
+# OCR model (download with wibblewobble/tools/get_ocr_model.py)
+wibblewobble/resource/model/

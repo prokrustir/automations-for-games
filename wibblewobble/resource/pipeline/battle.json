@@ -1,0 +1,295 @@
+{
+  "$note": "Battle + after-battle, 720x1280. Battle = pause button visible. Battle counts as over only after the pause button is gone in 3 checks ~1s apart; if it comes back, drags resume. After battle: tap Next/OK until the map is back. Continue/give-up/lost text stops the task. UseMove: taps a Yo-kai whose 'Move Ready!' bubble is shown (soultimate), checked between every batch of drags. TalkNext: advances Yo-kai dialogue (befriending etc.) by tapping the yellow down-arrow in the speech box. Lost battle: 'Spend Y-Money to Continue?' -> ContinuePrompt -> TapNo (never Yes). Other lost/retry screens with nothing to tap still stop the task.",
+  "BattleLoop": {
+    "recognition": "TemplateMatch",
+    "template": "battle/pause.png",
+    "roi": [
+      0,
+      0,
+      250,
+      120
+    ],
+    "threshold": 0.8,
+    "action": "Custom",
+    "custom_action": "RandomChains",
+    "custom_action_param": {
+      "center": [
+        360,
+        900
+      ],
+      "radius": 300,
+      "drags": 4
+    },
+    "pre_delay": 0,
+    "post_delay": 0,
+    "rate_limit": 200,
+    "next": [
+      "UseMoveImg",
+      "UseMove",
+      "BattleLoop",
+      "BattleEnded1"
+    ],
+    "timeout": 30000
+  },
+  "BattleEnded1": {
+    "recognition": "TemplateMatch",
+    "template": "battle/pause.png",
+    "roi": [
+      0,
+      0,
+      250,
+      120
+    ],
+    "threshold": 0.8,
+    "inverse": true,
+    "action": "DoNothing",
+    "pre_delay": 0,
+    "post_delay": 1000,
+    "next": [
+      "UseMoveImg",
+      "UseMove",
+      "BattleLoop",
+      "BattleEnded2"
+    ]
+  },
+  "BattleEnded2": {
+    "recognition": "TemplateMatch",
+    "template": "battle/pause.png",
+    "roi": [
+      0,
+      0,
+      250,
+      120
+    ],
+    "threshold": 0.8,
+    "inverse": true,
+    "action": "DoNothing",
+    "pre_delay": 0,
+    "post_delay": 1000,
+    "next": [
+      "UseMoveImg",
+      "UseMove",
+      "BattleLoop",
+      "BattleEnded3"
+    ]
+  },
+  "BattleEnded3": {
+    "recognition": "TemplateMatch",
+    "template": "battle/pause.png",
+    "roi": [
+      0,
+      0,
+      250,
+      120
+    ],
+    "threshold": 0.8,
+    "inverse": true,
+    "action": "DoNothing",
+    "pre_delay": 0,
+    "post_delay": 0,
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  },
+  "AfterBattle": {
+    "recognition": "DirectHit",
+    "action": "DoNothing",
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  },
+  "TapNext": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      100,
+      720,
+      1180
+    ],
+    "expected": "(?i)^next",
+    "action": "Click",
+    "post_delay": 1000,
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  },
+  "TapOk": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      100,
+      720,
+      1180
+    ],
+    "expected": "^(OK|Ok|ok)!?$",
+    "action": "Click",
+    "post_delay": 1000,
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  },
+  "LostOrContinue": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      100,
+      720,
+      1180
+    ],
+    "expected": "(?i)give up|retry|failed|lose|lost",
+    "action": "StopTask"
+  },
+  "BackOnMap": {
+    "recognition": "TemplateMatch",
+    "template": "map/rankings.png",
+    "roi": [
+      180,
+      1150,
+      250,
+      120
+    ],
+    "threshold": 0.85,
+    "action": "DoNothing"
+  },
+  "UseMove": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      260,
+      720,
+      180
+    ],
+    "expected": "(?i)ready",
+    "action": "Click",
+    "target_offset": [
+      30,
+      60,
+      -60,
+      0
+    ],
+    "pre_delay": 0,
+    "post_delay": 1500,
+    "next": [
+      "UseMoveImg",
+      "UseMove",
+      "BattleLoop",
+      "BattleEnded1"
+    ],
+    "timeout": 30000
+  },
+  "TalkNext": {
+    "recognition": "TemplateMatch",
+    "template": "battle/talk_arrow.png",
+    "roi": [
+      500,
+      700,
+      220,
+      260
+    ],
+    "threshold": 0.8,
+    "action": "Click",
+    "post_delay": 800,
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  },
+  "UseMoveImg": {
+    "roi": [
+      0,
+      260,
+      720,
+      180
+    ],
+    "action": "Click",
+    "target_offset": [
+      20,
+      60,
+      -40,
+      0
+    ],
+    "pre_delay": 0,
+    "post_delay": 1500,
+    "next": [
+      "UseMoveImg",
+      "UseMove",
+      "BattleLoop",
+      "BattleEnded1"
+    ],
+    "timeout": 30000,
+    "recognition": "TemplateMatch",
+    "template": "battle/move_ready.png",
+    "threshold": 0.75
+  },
+  "ContinuePrompt": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      350,
+      720,
+      560
+    ],
+    "expected": "(?i)continue",
+    "action": "DoNothing",
+    "next": [
+      "TapNo"
+    ],
+    "timeout": 5000
+  },
+  "TapNo": {
+    "recognition": "OCR",
+    "roi": [
+      40,
+      670,
+      300,
+      170
+    ],
+    "expected": "^(No|NO|no)$",
+    "action": "Click",
+    "post_delay": 1500,
+    "next": [
+      "BattleLoop",
+      "BackOnMap",
+      "ContinuePrompt",
+      "TapNext",
+      "TapOk",
+      "TalkNext",
+      "LostOrContinue"
+    ],
+    "timeout": 30000
+  }
+}

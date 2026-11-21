@@ -1,0 +1,179 @@
+{
+  "$note": "Map screen, 720x1280. TapStage reads the stage number with OCR; TapStageImg is the fallback for digits OCR misses (e.g. '1'), using images in image/map_digits/. run.py --stage N sets both. TapArrow: opens the newest stage (the one under the bouncing yellow arrow) - used by run.py --next. MapTalk: clicks through Yo-kai dialogue shown over the map before choosing a stage. MapOk: closes pop-ups over the map with an OK button (e.g. 'Open Hidden Route').",
+  "OpenStage": {
+    "recognition": "DirectHit",
+    "action": "DoNothing",
+    "next": [
+      "MapTalk",
+      "MapOk",
+      "HasStamina",
+      "HasStaminaDet",
+      "NoStamina"
+    ],
+    "timeout": 10000
+  },
+  "HasStamina": {
+    "recognition": "OCR",
+    "roi": [
+      38,
+      20,
+      46,
+      50
+    ],
+    "expected": "^0*[1-9][0-9]*$",
+    "action": "DoNothing",
+    "next": [
+      "TapStage",
+      "TapStageImg"
+    ],
+    "timeout": 10000,
+    "only_rec": true
+  },
+  "NoStamina": {
+    "recognition": "OCR",
+    "roi": [
+      38,
+      20,
+      46,
+      50
+    ],
+    "expected": "^0$",
+    "action": "DoNothing",
+    "only_rec": true
+  },
+  "TapStage": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      170,
+      720,
+      920
+    ],
+    "expected": "^3$",
+    "action": "Click",
+    "target_offset": [
+      0,
+      -70,
+      0,
+      0
+    ],
+    "next": [
+      "TapPlay"
+    ]
+  },
+  "TapStageImg": {
+    "recognition": "TemplateMatch",
+    "roi": [
+      0,
+      170,
+      720,
+      920
+    ],
+    "template": "map_digits/3.png",
+    "threshold": 0.85,
+    "action": "Click",
+    "target_offset": [
+      0,
+      -70,
+      0,
+      0
+    ],
+    "next": [
+      "TapPlay"
+    ]
+  },
+  "TapPlay": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      170,
+      720,
+      1110
+    ],
+    "expected": "(?i)play",
+    "action": "Click",
+    "timeout": 30000,
+    "next": [
+      "BattleLoop"
+    ]
+  },
+  "TapArrow": {
+    "recognition": "TemplateMatch",
+    "template": "map/next_arrow.png",
+    "roi": [
+      0,
+      170,
+      720,
+      920
+    ],
+    "threshold": 0.7,
+    "action": "Click",
+    "target_offset": [
+      0,
+      75,
+      0,
+      0
+    ],
+    "next": [
+      "TapPlay"
+    ],
+    "green_mask": true
+  },
+  "HasStaminaDet": {
+    "recognition": "OCR",
+    "roi": [
+      20,
+      15,
+      90,
+      70
+    ],
+    "expected": "^0*[1-9][0-9]*$",
+    "action": "DoNothing",
+    "next": [
+      "TapStage",
+      "TapStageImg"
+    ],
+    "timeout": 10000
+  },
+  "MapTalk": {
+    "recognition": "TemplateMatch",
+    "template": "battle/talk_arrow.png",
+    "roi": [
+      500,
+      700,
+      220,
+      260
+    ],
+    "threshold": 0.8,
+    "action": "Click",
+    "post_delay": 800,
+    "next": [
+      "MapTalk",
+      "MapOk",
+      "HasStamina",
+      "HasStaminaDet",
+      "NoStamina"
+    ],
+    "timeout": 15000
+  },
+  "MapOk": {
+    "recognition": "OCR",
+    "roi": [
+      0,
+      100,
+      720,
+      1000
+    ],
+    "expected": "^(OK|Ok|ok)!?$",
+    "action": "Click",
+    "post_delay": 1000,
+    "next": [
+      "MapTalk",
+      "MapOk",
+      "HasStamina",
+      "HasStaminaDet",
+      "NoStamina"
+    ],
+    "timeout": 15000
+  }
+}

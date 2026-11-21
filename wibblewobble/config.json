@@ -1,0 +1,7 @@
+{
+  "_comment": "Leave adb_address empty to auto-detect LDPlayer. Set it (e.g. \"emulator-5554\" or \"127.0.0.1:5555\") if you run several instances.",
+  "adb_address": "",
+  "adb_path": "",
+  "resource_dir": "resource",
+  "screenshots_dir": "screenshots"
+}
